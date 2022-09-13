@@ -11,19 +11,20 @@ class AuthCubit extends Cubit<AuthState> {
   final AuthRepository authRepository;
   late final StreamSubscription<User?> authSubscription;
 
-  AuthCubit({
-    required this.authRepository,
-  }) : super(AuthState.initial()) {
-    authSubscription =
-        authRepository.user.listen((User? user) => authStateChanged);
+  AuthCubit({required this.authRepository}) : super(AuthState.initial()) {
+    authSubscription = authRepository.user.listen((User? user) {
+      authStateChanged(user);
+    });
   }
 
   void authStateChanged(User? user) {
     if (user != null) {
-      emit(state.copyWith(
-        authStatus: AuthStatus.authenticated,
-        user: user,
-      ));
+      emit(
+        state.copyWith(
+          authStatus: AuthStatus.authenticated,
+          user: user,
+        ),
+      );
     } else {
       emit(state.copyWith(
         authStatus: AuthStatus.unauthenticated,
@@ -38,5 +39,11 @@ class AuthCubit extends Cubit<AuthState> {
     } on Exception catch (e) {
       print(e);
     }
+  }
+
+  @override
+  Future<void> close() {
+    authSubscription.cancel();
+    return super.close();
   }
 }

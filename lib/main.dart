@@ -6,7 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:map_exam/auth/auth_cubit/auth_cubit.dart';
 import 'package:map_exam/auth/auth_widget.dart';
 import 'package:map_exam/db/repositories/auth_repository.dart';
+import 'package:map_exam/db/repositories/note_repository.dart';
 import 'package:map_exam/firebase_options.dart';
+import 'package:map_exam/home/note_list_cubit/note_list_cubit.dart';
 
 // import 'login_screen.dart';
 // import 'home/home_screen.dart';
@@ -14,17 +16,14 @@ import 'package:map_exam/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    name: 'map-exam',
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   final firebaseAuth = FirebaseAuth.instance;
-  firebaseAuth.useAuthEmulator('10.0.2.2', 9099);
-
   final firebaseFirestore = FirebaseFirestore.instance;
-  firebaseFirestore.useFirestoreEmulator('10.0.2.2', 8080);
-  firebaseFirestore.settings = const Settings(
-    persistenceEnabled: false,
-    sslEnabled: false,
-  );
+
   runApp(App(
     firebaseAuth: firebaseAuth,
     firebaseFirestore: firebaseFirestore,
@@ -42,15 +41,32 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider<AuthRepository>(
-      create: (context) => AuthRepository(
-        firebaseAuth: firebaseAuth,
-        firebaseFirestore: firebaseFirestore,
-      ),
-      child: BlocProvider<AuthCubit>(
-        create: (context) => AuthCubit(
-          authRepository: context.read<AuthRepository>(),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<AuthRepository>(
+          create: (context) => AuthRepository(
+            firebaseAuth: firebaseAuth,
+            firebaseFirestore: firebaseFirestore,
+          ),
         ),
+        RepositoryProvider<NoteRepository>(
+          create: (context) =>
+              NoteRepository(firebaseFirestore: firebaseFirestore),
+        ),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<AuthCubit>(
+            create: (context) => AuthCubit(
+              authRepository: context.read<AuthRepository>(),
+            ),
+          ),
+          BlocProvider<NoteListCubit>(
+            create: (context) => NoteListCubit(
+                noteRepository: context.read<NoteRepository>(),
+                authCubit: context.read<AuthCubit>()),
+          ),
+        ],
         child: MaterialApp(
           title: 'myFirst',
           theme: ThemeData(

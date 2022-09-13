@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:map_exam/auth/auth_cubit/auth_cubit.dart';
+import 'package:map_exam/home/note_list_cubit/note_list_cubit.dart';
 
 class HomeScreen extends StatelessWidget {
   static Route route() => MaterialPageRoute(builder: (_) => const HomeScreen());
@@ -6,15 +9,20 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final notes = context.watch<NoteListCubit>().state.notes;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Notes'),
         actions: [
           CircleAvatar(
             backgroundColor: Colors.blue.shade200,
-            child: const Text(
-              '4',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0),
+            child: Text(
+              '${notes.length}',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 22.0,
+              ),
             ),
           ),
           const SizedBox(
@@ -23,7 +31,7 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: ListView.separated(
-        itemCount: 4,
+        itemCount: notes.length,
         separatorBuilder: (context, index) => const Divider(
           color: Colors.blueGrey,
         ),
@@ -47,8 +55,8 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
           ),
-          title: const Text('Note title'),
-          subtitle: const Text('Note content'),
+          title: Text(notes[index].title ?? ''),
+          subtitle: Text(notes[index].content ?? 'Note content'),
           onTap: () {},
           onLongPress: () {},
         ),
@@ -66,7 +74,9 @@ class HomeScreen extends StatelessWidget {
           FloatingActionButton(
             child: const Icon(Icons.add),
             tooltip: 'Add a new note',
-            onPressed: () {},
+            onPressed: () {
+              context.read<AuthCubit>().authRepository.signOut();
+            },
           ),
         ],
       ),
