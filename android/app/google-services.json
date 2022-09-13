@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "289380450863",
+    "project_id": "my-first-tech",
+    "storage_bucket": "my-first-tech.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:289380450863:android:986431f4a984c8f703fcda",
+        "android_client_info": {
+          "package_name": "com.example.map_exam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "289380450863-1u72ious9k6g4mel6jglb9gi4uirn1dr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJHrOCuJAAMPjQmVfCF9sivTJiXeyaJQQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "289380450863-1u72ious9k6g4mel6jglb9gi4uirn1dr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
