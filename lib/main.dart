@@ -10,6 +10,7 @@ import 'package:map_exam/db/repositories/note_repository.dart';
 import 'package:map_exam/firebase_options.dart';
 import 'package:map_exam/home/note_display_cubit/note_display_cubit.dart';
 import 'package:map_exam/home/note_list_cubit/note_list_cubit.dart';
+import 'package:map_exam/home/note_tool_cubit/note_tool_cubit.dart';
 
 // import 'login_screen.dart';
 // import 'home/home_screen.dart';
@@ -69,6 +70,9 @@ class App extends StatelessWidget {
           ),
           BlocProvider<NoteDisplayCubit>(
             create: (context) => NoteDisplayCubit(),
+          ),
+          BlocProvider<NoteToolCubit>(
+            create: (context) => NoteToolCubit(),
           ),
         ],
         child: MaterialApp(
