@@ -8,6 +8,7 @@ import 'package:map_exam/auth/auth_widget.dart';
 import 'package:map_exam/db/repositories/auth_repository.dart';
 import 'package:map_exam/db/repositories/note_repository.dart';
 import 'package:map_exam/firebase_options.dart';
+import 'package:map_exam/home/note_display_cubit/note_display_cubit.dart';
 import 'package:map_exam/home/note_list_cubit/note_list_cubit.dart';
 
 // import 'login_screen.dart';
@@ -65,6 +66,9 @@ class App extends StatelessWidget {
             create: (context) => NoteListCubit(
                 noteRepository: context.read<NoteRepository>(),
                 authCubit: context.read<AuthCubit>()),
+          ),
+          BlocProvider<NoteDisplayCubit>(
+            create: (context) => NoteDisplayCubit(),
           ),
         ],
         child: MaterialApp(
