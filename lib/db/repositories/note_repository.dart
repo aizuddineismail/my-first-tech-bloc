@@ -9,9 +9,13 @@ class NoteRepository {
     required this.firebaseFirestore,
   });
 
-  Future<List<Note>> getAllNotes(String email) async {
+  Future<List<Note>> getAllNotes(String uid) async {
     try {
-      final notesRef = await firebaseFirestore.collection('users').get();
+      final notesRef = await firebaseFirestore
+          .collection('users')
+          .doc(uid)
+          .collection('notes')
+          .get();
 
       if (notesRef.docs.isNotEmpty) {
         return notesRef.docs
@@ -21,7 +25,21 @@ class NoteRepository {
                 }))
             .toList();
       }
-      throw 'Note not found';
+      return [];
+    } on FirebaseException catch (e) {
+      print(e);
+      throw 'Firebase Error';
+    }
+  }
+
+  Future<void> deleteNote(String uid, String noteId) async {
+    try {
+      await firebaseFirestore
+          .collection('users')
+          .doc(uid)
+          .collection('notes')
+          .doc(noteId)
+          .delete();
     } on FirebaseException catch (e) {
       print(e);
       throw 'Firebase Error';

@@ -16,9 +16,17 @@ class NoteListCubit extends Cubit<NoteListState> {
 
   Future<void> getAllNotes() async {
     try {
-      final notes =
-          await noteRepository.getAllNotes(authCubit.state.user!.email ?? '');
+      final notes = await noteRepository.getAllNotes(authCubit.state.user!.uid);
       emit(state.copyWith(notes: notes));
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> deleteNote(String noteId) async {
+    try {
+      await noteRepository.deleteNote(authCubit.state.user!.uid, noteId);
+      await getAllNotes();
     } on Exception catch (e) {
       print(e);
     }

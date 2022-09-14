@@ -59,7 +59,11 @@ class HomeScreen extends StatelessWidget {
                           Icons.delete,
                           color: Colors.blue,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          context
+                              .read<NoteListCubit>()
+                              .deleteNote(notes[index].id);
+                        },
                       ),
                     ],
                   ),

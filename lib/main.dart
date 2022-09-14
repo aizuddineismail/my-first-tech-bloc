@@ -18,10 +18,7 @@ import 'package:map_exam/home/note_tool_cubit/note_tool_cubit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    name: 'map-exam',
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   final firebaseAuth = FirebaseAuth.instance;
   final firebaseFirestore = FirebaseFirestore.instance;
@@ -35,6 +32,7 @@ Future<void> main() async {
 class App extends StatelessWidget {
   final FirebaseFirestore firebaseFirestore;
   final FirebaseAuth firebaseAuth;
+
   const App({
     Key? key,
     required this.firebaseFirestore,

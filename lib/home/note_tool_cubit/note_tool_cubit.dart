@@ -7,7 +7,6 @@ class NoteToolCubit extends Cubit<NoteToolState> {
   NoteToolCubit() : super(NoteToolState.initial());
 
   void toggleNoteTool(dynamic id) {
-    print(id);
     if (state.id != id) {
       emit(state.copyWith(noteToolStatus: NoteToolStatus.show, id: id));
     } else {

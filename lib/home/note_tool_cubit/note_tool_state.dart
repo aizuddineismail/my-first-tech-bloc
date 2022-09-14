@@ -29,7 +29,7 @@ class NoteToolState extends Equatable {
 
   NoteToolState copyWith({
     NoteToolStatus? noteToolStatus,
-    dynamic? id,
+    dynamic id,
   }) {
     return NoteToolState(
       noteToolStatus: noteToolStatus ?? this.noteToolStatus,
